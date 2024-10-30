@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Python Chatbot</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+
+    <h1>Chatbot</h1>
+    <div id="chatbox"></div>
+
+    <div id="inputArea">
+        <input type="text" id="userInput" placeholder="Type a message">
+        <button id="sendButton">Send</button>
+    </div>
+
+    <script>
+        async function sendMessage() {
+            const userMessage = document.getElementById('userInput').value;
+
+            // Append user message to the chatbox
+            const chatbox = document.getElementById('chatbox');
+            const userMessageElement = document.createElement('div');
+            userMessageElement.classList.add('user-message');
+            userMessageElement.textContent = userMessage;
+            chatbox.appendChild(userMessageElement);
+
+            // Send message to the backend
+            const response = await fetch('/chat', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ message: userMessage })
+            });
+
+            const data = await response.json();
+            const botMessage = data.response;
+
+            // Append bot response to the chatbox
+            const botMessageElement = document.createElement('div');
+            botMessageElement.classList.add('bot-message');
+            botMessageElement.textContent = botMessage;
+            chatbox.appendChild(botMessageElement);
+
+            // Clear user input
+            document.getElementById('userInput').value = '';
+
+            // Scroll to the bottom of the chatbox
+            chatbox.scrollTop = chatbox.scrollHeight;
+        }
+
+        document.getElementById('sendButton').addEventListener('click', sendMessage);
+
+        document.getElementById('userInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+    </script>
+
+</body>
+</html>
