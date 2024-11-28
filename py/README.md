@@ -2,6 +2,9 @@ To Start the Python venv, type: source venv/bin/activate
 
 To Start, execute: python app.py
 
+Note: You may need to append the Directory/Folder path accordingly prior to executing 
+the above command...eg: <DIR-PATH/python app.py>
+
 Launch Browser, and visit: http://127.0.0.1:21900/
 
 To Stop, press CTRL+C.
